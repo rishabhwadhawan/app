@@ -27,6 +27,31 @@ app.get('/main', function(req,res){
 });
 
 app.post('/temp',function(req,res){
+
+    var bodytag = JSON.stringify(req.body)
+    var headertag = JSON.stringify(req.headers)
+    var routetag = JSON.stringify(req.route.path)
+    var methodtag = JSON.stringify(req.method)
+ 
+    var logobject = new Object();
+
+    logobject["REQUEST"] = [headertag, routetag, methodtag, bodytag]
+    logobject["RESPONSE"] = "HELLO!";
+
+    var jsonlogobject = JSON.stringify(logobject)
+    var options = {
+	mode:'text',
+	args: [jsonlogobject],
+	pythonOptions: ['-u'],
+	scriptPath: '/home/ubuntu/Hackathon/Code'
+    }
+    
+    pythonshell.run('KafkaInterface.py',options,function(err,results){
+        if(err) throw err;
+        console.log(results)
+    });
+   
+    /*
     var nodes = req.body.objectslist;
     var coorrdinates = req.body.colist;
     
@@ -38,14 +63,17 @@ app.post('/temp',function(req,res){
       mode:'text',
       args: [jsonnodes,coordinatesnodes],
       pythonOptions: ['-u'],
-      scriptPath: '/home/master/DBLP/dblp_phd_app/'
+      scriptPath: '/home/ubuntu/Hackathon/Code'
     }
+    
+    console.log(jsonnodes)
+    console.log(coordinatesnodes)
 
     pythonshell.run('queryfile.py',options,function(err,results){
         if(err) throw err;
         console.log(results)
     });   
-
+    */
     res.send(200);
 });
 

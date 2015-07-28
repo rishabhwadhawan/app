@@ -1,7 +1,7 @@
 0 info it worked if it ends with ok
 1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', '-g', 'nodemon' ]
 2 info using npm@1.4.28
-3 info using node@v0.10.33
+3 info using node@v0.10.40
 4 verbose node symlink /usr/bin/node
 5 verbose cache add [ 'nodemon', null ]
 6 verbose cache add name=undefined spec="nodemon" args=["nodemon",null]
@@ -18,41 +18,40 @@
 7 verbose parsed url   path: 'nodemon',
 7 verbose parsed url   href: 'nodemon' }
 8 silly lockFile 1625b929-nodemon nodemon
-9 verbose lock nodemon /home/master/.npm/1625b929-nodemon.lock
+9 verbose lock nodemon /home/ubuntu/.npm/1625b929-nodemon.lock
 10 silly lockFile 1625b929-nodemon nodemon
 11 silly lockFile 1625b929-nodemon nodemon
 12 verbose addNamed [ 'nodemon', '' ]
 13 verbose addNamed [ null, '*' ]
 14 silly lockFile 4f5e51c6-nodemon nodemon@
-15 verbose lock nodemon@ /home/master/.npm/4f5e51c6-nodemon.lock
+15 verbose lock nodemon@ /home/ubuntu/.npm/4f5e51c6-nodemon.lock
 16 silly addNameRange { name: 'nodemon', range: '*', hasData: false }
 17 verbose request where is /nodemon
 18 verbose request registry https://registry.npmjs.org/
-19 verbose request id 5f07b0cb011256fe
+19 verbose request id 3fedcd721c9c0fe9
 20 verbose url raw /nodemon
 21 verbose url resolving [ 'https://registry.npmjs.org/', './nodemon' ]
 22 verbose url resolved https://registry.npmjs.org/nodemon
 23 verbose request where is https://registry.npmjs.org/nodemon
-24 info trying registry request attempt 1 at 17:06:39
+24 info trying registry request attempt 1 at 21:41:04
 25 http GET https://registry.npmjs.org/nodemon
 26 http 200 https://registry.npmjs.org/nodemon
 27 silly registry.get cb [ 200,
-27 silly registry.get   { date: 'Sun, 15 Feb 2015 00:06:15 GMT',
-27 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-27 silly registry.get     etag: '"OSO5JMJHNBHZAWFR8RVBFR4L"',
+27 silly registry.get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+27 silly registry.get     etag: '"3TZW0N3TUBNGUIHUI6H0EZ51K"',
 27 silly registry.get     'content-type': 'application/json',
 27 silly registry.get     'cache-control': 'max-age=60',
-27 silly registry.get     'content-length': '147137',
+27 silly registry.get     'content-length': '150464',
 27 silly registry.get     'accept-ranges': 'bytes',
+27 silly registry.get     date: 'Tue, 28 Jul 2015 21:45:00 GMT',
 27 silly registry.get     via: '1.1 varnish',
 27 silly registry.get     age: '0',
-27 silly registry.get     'x-served-by': 'cache-lax1423-LAX',
+27 silly registry.get     connection: 'keep-alive',
+27 silly registry.get     'x-served-by': 'cache-sjc3122-SJC',
 27 silly registry.get     'x-cache': 'HIT',
 27 silly registry.get     'x-cache-hits': '1',
-27 silly registry.get     'x-timer': 'S1423958775.754266,VS0,VE40',
-27 silly registry.get     vary: 'Accept',
-27 silly registry.get     'keep-alive': 'timeout=10, max=50',
-27 silly registry.get     connection: 'Keep-Alive' } ]
+27 silly registry.get     'x-timer': 'S1438119900.170400,VS0,VE34',
+27 silly registry.get     vary: 'Accept' } ]
 28 silly addNameRange number 2 { name: 'nodemon', range: '*', hasData: true }
 29 silly addNameRange versions [ 'nodemon',
 29 silly addNameRange   [ '0.1.4',
@@ -169,23 +168,25 @@
 29 silly addNameRange     '1.3.3',
 29 silly addNameRange     '1.3.5',
 29 silly addNameRange     '1.3.6',
-29 silly addNameRange     '1.3.7' ] ]
-30 verbose addNamed [ 'nodemon', '1.3.7' ]
-31 verbose addNamed [ '1.3.7', '1.3.7' ]
-32 silly lockFile fec6bbf0-nodemon-1-3-7 nodemon@1.3.7
-33 verbose lock nodemon@1.3.7 /home/master/.npm/fec6bbf0-nodemon-1-3-7.lock
-34 silly lockFile bcea1563-js-org-nodemon-nodemon-1-3-7-tgz https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz
-35 verbose lock https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz /home/master/.npm/bcea1563-js-org-nodemon-nodemon-1-3-7-tgz.lock
-36 verbose addRemoteTarball [ 'https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz',
-36 verbose addRemoteTarball   '447bc2e01bf499cbf5853f9937496e0a04835449' ]
-37 info retry fetch attempt 1 at 17:06:40
-38 verbose fetch to= /tmp/npm-25471-JOoqCMt3/registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz
-39 http GET https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz
-40 http 200 https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz
-41 silly lockFile bcea1563-js-org-nodemon-nodemon-1-3-7-tgz https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz
-42 silly lockFile bcea1563-js-org-nodemon-nodemon-1-3-7-tgz https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz
-43 silly lockFile fec6bbf0-nodemon-1-3-7 nodemon@1.3.7
-44 silly lockFile fec6bbf0-nodemon-1-3-7 nodemon@1.3.7
+29 silly addNameRange     '1.3.7',
+29 silly addNameRange     '1.3.8',
+29 silly addNameRange     '1.4.0' ] ]
+30 verbose addNamed [ 'nodemon', '1.4.0' ]
+31 verbose addNamed [ '1.4.0', '1.4.0' ]
+32 silly lockFile 5fc335d7-nodemon-1-4-0 nodemon@1.4.0
+33 verbose lock nodemon@1.4.0 /home/ubuntu/.npm/5fc335d7-nodemon-1-4-0.lock
+34 silly lockFile 88f92cff-js-org-nodemon-nodemon-1-4-0-tgz https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz
+35 verbose lock https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz /home/ubuntu/.npm/88f92cff-js-org-nodemon-nodemon-1-4-0-tgz.lock
+36 verbose addRemoteTarball [ 'https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz',
+36 verbose addRemoteTarball   'f566146245c82910a4e7d051c10afe0535e9394c' ]
+37 info retry fetch attempt 1 at 21:41:05
+38 verbose fetch to= /tmp/npm-18526-Gi8zTjdm/registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz
+39 http GET https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz
+40 http 200 https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz
+41 silly lockFile 88f92cff-js-org-nodemon-nodemon-1-4-0-tgz https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz
+42 silly lockFile 88f92cff-js-org-nodemon-nodemon-1-4-0-tgz https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz
+43 silly lockFile 5fc335d7-nodemon-1-4-0 nodemon@1.4.0
+44 silly lockFile 5fc335d7-nodemon-1-4-0 nodemon@1.4.0
 45 silly lockFile 4f5e51c6-nodemon nodemon@
 46 silly lockFile 4f5e51c6-nodemon nodemon@
 47 silly resolved [ { name: 'nodemon',
@@ -193,7 +194,9 @@
 47 silly resolved     author: { name: 'Remy Sharp', url: 'http://github.com/remy' },
 47 silly resolved     bin: { nodemon: './bin/nodemon.js' },
 47 silly resolved     engines: { node: '>=0.8' },
-47 silly resolved     repository: { type: 'git', url: 'http://github.com/remy/nodemon.git' },
+47 silly resolved     repository:
+47 silly resolved      { type: 'git',
+47 silly resolved        url: 'git+ssh://git@github.com/remy/nodemon.git' },
 47 silly resolved     description: 'Simple monitor script for use during development of a node.js app.',
 47 silly resolved     keywords:
 47 silly resolved      [ 'monitor',
@@ -202,9 +205,9 @@
 47 silly resolved        'autoload',
 47 silly resolved        'reload',
 47 silly resolved        'terminal' ],
-47 silly resolved     version: '1.3.7',
+47 silly resolved     version: '1.4.0',
 47 silly resolved     preferGlobal: 'true',
-47 silly resolved     licenses: [ [Object] ],
+47 silly resolved     license: 'MIT',
 47 silly resolved     main: './lib/nodemon',
 47 silly resolved     scripts:
 47 silly resolved      { coverage: 'istanbul cover _mocha -- --timeout 30000 --ui bdd --reporter list test/**/*.test.js',
@@ -222,27 +225,28 @@
 47 silly resolved        'ps-tree': '~0.0.3',
 47 silly resolved        touch: '~0.0.3',
 47 silly resolved        'update-notifier': '^0.3.0' },
-47 silly resolved     gitHead: 'ceb53ce403f7b5a39ba4c133f73fe780e472209e',
+47 silly resolved     gitHead: '6152786ba2254eb7e3d1936f3b42bab3b159bcaf',
 47 silly resolved     bugs: { url: 'https://github.com/remy/nodemon/issues' },
-47 silly resolved     _id: 'nodemon@1.3.7',
-47 silly resolved     _shasum: '447bc2e01bf499cbf5853f9937496e0a04835449',
+47 silly resolved     _id: 'nodemon@1.4.0',
+47 silly resolved     _shasum: 'f566146245c82910a4e7d051c10afe0535e9394c',
 47 silly resolved     _from: 'nodemon@',
-47 silly resolved     _npmVersion: '1.4.28',
-47 silly resolved     _npmUser: { name: 'remy', email: 'remy@remysharp.com' },
-47 silly resolved     maintainers: [ [Object] ],
+47 silly resolved     _npmVersion: '2.13.1',
+47 silly resolved     _nodeVersion: '0.10.38',
+47 silly resolved     _npmUser: { name: 'remy', email: 'remy@leftlogic.com' },
 47 silly resolved     dist:
-47 silly resolved      { shasum: '447bc2e01bf499cbf5853f9937496e0a04835449',
-47 silly resolved        tarball: 'http://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz' },
+47 silly resolved      { shasum: 'f566146245c82910a4e7d051c10afe0535e9394c',
+47 silly resolved        tarball: 'http://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz' },
+47 silly resolved     maintainers: [ [Object] ],
 47 silly resolved     directories: {},
-47 silly resolved     _resolved: 'https://registry.npmjs.org/nodemon/-/nodemon-1.3.7.tgz' } ]
-48 info install nodemon@1.3.7 into /usr/lib
-49 info installOne nodemon@1.3.7
+47 silly resolved     _resolved: 'https://registry.npmjs.org/nodemon/-/nodemon-1.4.0.tgz' } ]
+48 info install nodemon@1.4.0 into /usr/lib
+49 info installOne nodemon@1.4.0
 50 verbose lib/node_modules/nodemon unbuild
-51 verbose tar unpack /home/master/.npm/nodemon/1.3.7/package.tgz
+51 verbose tar unpack /home/ubuntu/.npm/nodemon/1.4.0/package.tgz
 52 silly lockFile f069062d-tar-usr-lib-node-modules-nodemon tar:///usr/lib/node_modules/nodemon
-53 verbose lock tar:///usr/lib/node_modules/nodemon /home/master/.npm/f069062d-tar-usr-lib-node-modules-nodemon.lock
-54 silly lockFile 32f98447-er-npm-nodemon-1-3-7-package-tgz tar:///home/master/.npm/nodemon/1.3.7/package.tgz
-55 verbose lock tar:///home/master/.npm/nodemon/1.3.7/package.tgz /home/master/.npm/32f98447-er-npm-nodemon-1-3-7-package-tgz.lock
+53 verbose lock tar:///usr/lib/node_modules/nodemon /home/ubuntu/.npm/f069062d-tar-usr-lib-node-modules-nodemon.lock
+54 silly lockFile 2163b07b-tu-npm-nodemon-1-4-0-package-tgz tar:///home/ubuntu/.npm/nodemon/1.4.0/package.tgz
+55 verbose lock tar:///home/ubuntu/.npm/nodemon/1.4.0/package.tgz /home/ubuntu/.npm/2163b07b-tu-npm-nodemon-1-4-0-package-tgz.lock
 56 silly gunzTarPerm modes [ '775', '664' ]
 57 error Error: EACCES, mkdir '/usr/lib/node_modules/nodemon'
 57 error  { [Error: EACCES, mkdir '/usr/lib/node_modules/nodemon']
@@ -255,12 +259,12 @@
 57 error   fstream_stack:
 57 error    [ '/usr/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
 57 error      '/usr/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
-57 error      'Object.oncomplete (fs.js:107:15)' ] }
+57 error      'Object.oncomplete (fs.js:108:15)' ] }
 58 error Please try running this command again as root/Administrator.
-59 error System Linux 3.13.0-45-generic
+59 error System Linux 3.13.0-52-generic
 60 error command "/usr/bin/node" "/usr/bin/npm" "install" "-g" "nodemon"
-61 error cwd /home/master/DBLP/dblp_phd_app
-62 error node -v v0.10.33
+61 error cwd /home/ubuntu/Hackathon/app
+62 error node -v v0.10.40
 63 error npm -v 1.4.28
 64 error path /usr/lib/node_modules/nodemon
 65 error fstream_path /usr/lib/node_modules/nodemon
@@ -271,5 +275,5 @@
 70 error stack Error: EACCES, mkdir '/usr/lib/node_modules/nodemon'
 71 error fstream_stack /usr/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
 71 error fstream_stack /usr/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
-71 error fstream_stack Object.oncomplete (fs.js:107:15)
+71 error fstream_stack Object.oncomplete (fs.js:108:15)
 72 verbose exit [ 3, true ]
