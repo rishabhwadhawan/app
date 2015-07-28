@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Range Query</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      label, input { display:block; }
+      
+      input.text { margin-bottom:12px; width:95%; padding: .4em; }
+      
+      fieldset { padding:0; border:0; margin-top:25px; }
+      
+      h1 { font-size: 1.2em; margin: .6em 0; }
+      
+      div#users-contain { width: 350px; margin: 20px 0; }
+      
+      div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+      
+      div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+      .ui-dialog .ui-state-error { padding: .3em; }
+      .validateTips { border: 1px solid transparent; padding: 0.3em; }
+      
+      #dialog-form{
+        position: absolute;
+        margin-top: 300px;
+        margin-left: 300px;
+        z-index: 5;
+        padding: 20px;
+        border: 1px solid #999;
+        background: rgba(237,237,237,1); background: -moz-linear-gradient(left, rgba(237,237,237,1) 0%, rgba(217,217,217,1) 32%, rgba(227,227,227,1) 52%, rgba(255,255,255,1) 100%); background: -webkit-gradient(left top, right top, color-stop(0%, rgba(237,237,237,1)), color-stop(32%, rgba(217,217,217,1)), color-stop(52%, rgba(227,227,227,1)), color-stop(100%, rgba(255,255,255,1))); background: -webkit-linear-gradient(left, rgba(237,237,237,1) 0%, rgba(217,217,217,1) 32%, rgba(227,227,227,1) 52%, rgba(255,255,255,1) 100%); background: -o-linear-gradient(left, rgba(237,237,237,1) 0%, rgba(217,217,217,1) 32%, rgba(227,227,227,1) 52%, rgba(255,255,255,1) 100%); background: -ms-linear-gradient(left, rgba(237,237,237,1) 0%, rgba(217,217,217,1) 32%, rgba(227,227,227,1) 52%, rgba(255,255,255,1) 100%); background: linear-gradient(to right, rgba(237,237,237,1) 0%, rgba(217,217,217,1) 32%, rgba(227,227,227,1) 52%, rgba(255,255,255,1) 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#ffffff', GradientType=1 );
+        border-radius: 30px;
+      }     
+
+      button { 
+        padding: 8px 16px;
+        font-size: 14px;
+        font-family: Georgia, serif;
+
+      }
+      
+      #panelbutton{
+
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        padding: 5px;
+      }
+
+      circle{
+        fill:#85bade;
+      }
+
+      #resultbutton{
+
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        z-index: 5;
+        padding: 5px;
+      }
+
+      #panel {
+
+        border-radius: 30px;
+        position: absolute;
+        bottom: 0px;
+        height: 40%;
+        width: 900px;
+        z-index: 5;
+        padding: 20px;
+        background: rgba(226,226,226,1); background: -moz-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 4%, rgba(209,209,209,1) 35%, rgba(255,255,255,1) 62%, rgba(255,255,255,1) 99%); background: -webkit-gradient(left top, right top, color-stop(0%, rgba(226,226,226,1)), color-stop(4%, rgba(219,219,219,1)), color-stop(35%, rgba(209,209,209,1)), color-stop(62%, rgba(255,255,255,1)), color-stop(99%, rgba(255,255,255,1))); background: -webkit-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 4%, rgba(209,209,209,1) 35%, rgba(255,255,255,1) 62%, rgba(255,255,255,1) 99%); background: -o-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 4%, rgba(209,209,209,1) 35%, rgba(255,255,255,1) 62%, rgba(255,255,255,1) 99%); background: -ms-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 4%, rgba(209,209,209,1) 35%, rgba(255,255,255,1) 62%, rgba(255,255,255,1) 99%); background: linear-gradient(to right, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 4%, rgba(209,209,209,1) 35%, rgba(255,255,255,1) 62%, rgba(255,255,255,1) 99%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#ffffff', GradientType=1 );
+      }
+      #leftpanel{
+        width:725px;
+        
+        float:left;
+      }
+      #rightpanel{
+        height: 100%;
+        width:150px; 
+        
+        overflow:hidden;
+      }
+
+      .queryinput{
+        margin-top: 10px;
+        margin-left: 10px;
+        width: 150px;
+      }
+      body{
+      font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+      }
+      
+      p.lead {
+      padding-top: 1.5%;
+      font-size: 24px;
+      line-height: 30px;
+      }
+      p {
+      font-size: 18px;
+      line-height: 24px;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+     <link rel="stylesheet" href="https://d396qusza40orc.cloudfront.net/startup%2Fcode%2Fbootstrap-combined.no-icons.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+    <link rel="stylesheet" href="https://d396qusza40orc.cloudfront.net/startup%2Fcode%2Fsocial-buttons.css"> 
+    <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,300,400,600,700,800"
+    rel="stylesheet" type="text/css">
+
+    <script>
+// This example adds a user-editable rectangle to the map.
+// When the user changes the bounds of the rectangle,
+// an info window pops up displaying the new bounds.
+
+var rectangle;
+var map;
+var infoWindow;
+
+function initialize() {
+  var mapOptions = {
+    center: new google.maps.LatLng(33.33, -112.5389),
+    zoom: 6,
+    mapTypeId: google.maps.MapTypeId.HYBRID
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+}
+
+function showRect(){
+
+  var bounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(32.490, -115.649),
+      new google.maps.LatLng(35.599, -110.443)
+  );
+
+  // Define the rectangle and set its editable property to true.
+  rectangle = new google.maps.Rectangle({
+    bounds: bounds,
+    editable: true,
+    draggable: true
+  });
+
+  rectangle.setMap(map);
+
+  // Add an event listener on the rectangle.
+  google.maps.event.addListener(rectangle, 'bounds_changed', showNewRect);
+
+  // Define an info window on the map.
+  infoWindow = new google.maps.InfoWindow();
+
+}
+
+var point1lat,point1long,point2lat,point2long;
+
+/** @this {google.maps.Rectangle} */
+function showNewRect(event) {
+  var ne = rectangle.getBounds().getNorthEast();
+  var sw = rectangle.getBounds().getSouthWest();
+
+  point1lat = ne.lat();
+  point1long = ne.lng();
+  point2lat = sw.lat();
+  point2long = sw.lng();
+
+  var contentString = '<b>Rectangle moved.</b><br>' +
+      'New north-east corner: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+      'New south-west corner: ' + sw.lat() + ', ' + sw.lng();
+
+  // Set the info window's content and position.
+  infoWindow.setContent(contentString);
+  infoWindow.setPosition(ne);
+
+  infoWindow.open(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+
+    <div id="resultbutton">
+      <button id = "showresult" type ="submit">Show Query Result</button>
+    </div>
+
+    <div id="panelbutton">
+      <button id = "showpanel" type ="submit">Add New Spatial Query</button>
+    </div>    
+
+    <div id="panel">
+      <div id ="leftpanel">
+        <div>
+          <h3 style="float:left;"> PLEASE PROVIDE GRAPH QUERY</h3>
+          <button style = "overflow:hidden; margin-left: 600px;" id  = "submitquery" type ="submit" onclick = ' confirmdialog.dialog("open");'>Submit Query</button>
+            
+        </div>
+
+        <button id  = "showoptions" type ="submit" onclick = "return showfirstoptions();">Show Options</button>
+        <button id  = "addnode" type ="submit">Add Node</button>
+        
+        <div id ="options">
+        </div>
+      </div>
+      
+      <div id="rightpanel">
+        <div id = "labels" style="margin-left:20px; margin-top:55px;">
+        </div>
+      </div>
+    </div>
+
+
+    <div id="dialog-form">
+      <h3>PROVIDE NODE DETAILS</h3>
+      
+      <div id = 'nodetypediv'>
+      Choose Node Type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id = "nodetype">
+          <option value = "*">*</option>
+          <option value = "Author">Author</option>
+          <option value = "Article">Article</option>
+          <option value = "Conference">Conference</option>
+          <option value = "Journal">Journal</option>
+          <option value = "Inproceedings">Inproceedings</option>
+        </select>
+      </div>
+      Choose Node Attribute: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id = "nodeproperty">
+        </select>
+        <br>
+        <p>
+        <div id='nodevaluediv'>
+        
+        </div>
+        <button id  = "resetbutton" type ="submit">Reset</button>
+        <button id  = "spatial" type ="submit">Spatial Attribute</button>
+        <button id  = "capturebutton" type ="submit">Capture Spatial Coordinates</button>
+        <button id  = "okaybutton" style="margin-right:-10px;"type ="submit">OK</button>
+    </div>
+
+    <div id="dialog-confirm" title="Please Confirm">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to select this query?</p>
+    </div>
+
+    <div id="map-canvas"> 
+    </div>
+
+    <script>
+
+    var Inproceedings
+    var coordinates = []
+    var nodecount = 0
+    var nodes = []
+    var node
+    var xnodevalue = 30
+    var linexvalue
+    var previouslinexvalue
+
+     var confirmdialog = $( "#dialog-confirm" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        height:140,
+        modal: true,
+        buttons: {
+        "Finished": submitthequery,
+        Cancel: function() {
+        $( this ).dialog( "close" );
+        }
+        }
+    });
+
+    d3.select('#resetbutton').on('click',function(){
+      resetdialogvalues();
+    });
+
+    d3.select('#okaybutton').on('click',function(){
+      assignvaluetonode();
+    });
+
+    d3.select('#panel').style('visibility','hidden');
+    d3.select('#spatial').style('visibility','hidden')
+    d3.select('#panelbutton').on('click',function(){
+      showPanel();
+      d3.select(this).remove();
+    });
+
+    d3.select("#showresult").style("visibility","visible").on("click",function()
+    {
+        showtheresults();
+    });
+
+    d3.select("#labels").append("img").attr("src","/image");
+
+    d3.select("#capturebutton").style("visibility","hidden");
+    d3.select("#addnode").style("visibility","hidden");
+    d3.select("#dialog-form").style("visibility","hidden");
+    d3.select("#spatial").on('click',function(){  
+      showRect();
+      d3.select("#capturebutton").style("visibility","visible");      
+    })
+    
+    d3.select("#capturebutton").on('click',function(){  
+      
+      var temp = []
+      
+      temp.push(nodecount)
+      temp.push(point1lat)
+      temp.push(point1long)
+      temp.push(point2lat)
+      temp.push(point2long)
+
+      coordinates.push(temp)
+      console.log(coordinates)
+      rectangle.setMap(null)
+      infoWindow.close()
+      d3.select("#capturebutton").style("visibility","hidden");
+      d3.select("#spatial").style("visibility","hidden");
+    })
+var nodetypevalue;
+
+    d3.select('#addnode').on('click',function(){
+        var morenode = opt.append("circle").attr("class",function(){
+          return "mynode"+nodecount.toString();
+        })
+        .style("stroke",'black')
+        .attr('r',30).attr('cx',function(){  return xnodevalue; }).attr('cy',50)
+        .on("click",function(){ 
+          resetdialogvalues()
+          d3.select("#dialog-form").style("visibility","visible");
+          previouslinexvalue = linexvalue;
+          linexvalue = 100+xnodevalue;
+
+          if (nodecount == 1)
+          {
+            opt.append("line").attr('x1', function(){ return linexvalue - 30;}).attr('y1',50).attr('x2',function(){ return xnodevalue + 30 ;}).attr('y2',50).style('stroke','green');
+          }
+          else
+          {
+           opt.append("line").attr('x1', function(){ return linexvalue - 30;}).attr('y1',50).attr('x2',function(){ return previouslinexvalue+30 ;}).attr('y2',50).style('stroke','green'); 
+          }
+          xnodevalue = 100 + xnodevalue
+          nodecount = nodecount +1;
+          d3.select("#addnode").style("visibility","visible");
+          nodeproperties();
+        });
+        morenode.transition().duration(1000).attr("transform","translate("+100+","+0+")")        
+     })
+
+  function nodeproperties(){
+
+    $('#nodeproperty').val('-')
+    $('#nodevaluediv').html("")
+
+    d3.select('#dialog-form').style('height','220px');
+    $('#nodetype').val('*')
+    $('#nodetype').change(function(){
+      
+      var nodevalue = $('#nodetype').val()
+      nodetypevalue = nodevalue
+      $('#nodeproperty').html("")
+
+      if(nodevalue.toString() == 'Article')
+      {
+          d3.select(".mynode"+(nodecount-1).toString())
+          .style("fill","blue");  
+          $('#nodeproperty')
+          .html("<option>Title</option><option>Journal</option><option>First_author</option><option>Collaborators</option><option>Year</option><option>Date</option><option>Link</option><option>Volume</option>");
+          $('#nodeproperty').val('-')
+
+      }
+      else if(nodevalue.toString() == 'Author')
+      {
+          d3.select(".mynode"+(nodecount-1).toString())
+          .style("fill","red");  
+          $('#nodeproperty')
+          .html("<option>Name</option><option>Spatial*</option><option>Address</option>");
+          $('#nodeproperty').val('-')
+      }
+      else if(nodevalue.toString() == 'Journal')
+      {
+          d3.select(".mynode"+(nodecount-1).toString())
+          .style("fill","green");  
+          $('#nodeproperty')
+          .html("<option>Name</option><option>Year/Date</option>");
+          $('#nodeproperty').val('-')
+
+      }
+      else if(nodevalue.toString() == 'Conference')
+      {
+          d3.select(".mynode"+(nodecount-1).toString())
+          .style("fill","cyan");  
+          $('#nodeproperty')
+          .html("<option>Name</option><option>Year</option><option>Date</option><option>Spatial*</option>");
+          $('#nodeproperty').val('-')
+
+      }
+      else if(nodevalue.toString() == 'Inproceedings')
+      {
+          d3.select(".mynode"+(nodecount-1).toString())
+          .style("fill","yellow");  
+          $('#nodeproperty')
+          .html("<option>Title</option><option>Conference</option><option>First_author</option><option>Collaborators</option><option>Year</option><option>Date</option><option>Link</option>");
+          $('#nodeproperty').val('-')
+      }
+    })
+    $('#nodeproperty').change(function(){
+      var nodeprop = $(this).val()
+      console.log(nodeprop);
+      if(nodeprop == 'Spatial*')
+      {
+        d3.select('#spatial').style('visibility','visible');
+        d3.select('#dialog-form').style('height','265px');
+      }
+      else if(nodeprop == 'Year')
+      {
+        $('#nodevaluediv').html("")
+        $('#nodevaluediv').html("<input type='text' id='fromdate'> - TO- <input type='text' id='tilldate'>")
+        $('#fromdate').datepicker();
+        $('#tilldate').datepicker();
+        d3.select('#dialog-form').style('height','265px');
+      }
+      else if(nodeprop == 'Date')
+      {
+        $('#nodevaluediv').html("")
+        $('#nodevaluediv').html("<input type='text' id='querydate'>")
+        $('#querydate').datepicker();
+        d3.select('#dialog-form').style('height','265px');
+      }
+      else
+      {
+        $('#nodevaluediv').html("")
+        $('#nodevaluediv').html("<label for='nodevalue'>Please Provide Value of Node</label><input type='text' name='nodevalue' id='nodevalue' class='text ui-widget-content ui-corner-all'>")
+        d3.select('#dialog-form').style('height','265px');
+      }
+    })
+  }
+
+    function resetdialogvalues(){
+        $('#nodevalue').val("")
+    }
+      
+    var opt = d3.select('#options').append("svg").attr('height',"100px").attr("width","600px");
+    
+    function showPanel(){
+      d3.select('#panel').style('visibility','visible');
+      $('#panel').draggable();
+    }
+    
+    $('#dialog-form').draggable();
+    
+    function assignvaluetonode(){
+
+          node = new Object();
+          node.id = nodecount;
+          node.type = $('#nodetype').val();
+          var nodeproptemp = $('#nodeproperty').val();
+          node.attribute = nodeproptemp;
+
+          if(nodeproptemp == 'Year')
+          {
+            var from = $('#fromdate').val();
+            var till = $('#tilldate').val();
+            var content = from.toString()+'$'+till.toString()
+            node.value = content;            
+          }
+          else if(nodeproptemp == 'Date')
+          {
+            var querydate = $('#querydate').val();
+            node.value = querydate.toString();             
+          }
+          else
+          {
+            node.value = $('#nodevalue').val();  
+          }         
+          nodes.push(node)
+          console.log(nodes)
+          $('nodeproperty').html("")
+          d3.select("#dialog-form").style("visibility","hidden");
+    }
+
+    function showfirstoptions(){
+
+      d3.select("#showoptions").remove();
+      
+        var firstnode = opt.append("circle").attr("class",function(){
+          return "mynode"+nodecount.toString();
+        })
+        .style("stroke",'black')
+        .attr('r',30).attr('cx',xnodevalue).attr('cy',50)
+        .on("click",function(){ 
+          resetdialogvalues()
+          d3.select("#dialog-form").style("visibility","visible")
+          nodecount = nodecount +1;
+          nodeproperties();
+          d3.select("#addnode").style("visibility","visible");
+        });
+    }    
+
+    function submitthequery()
+    {
+      d3.select("#showresult").style("visibility","visible");
+      confirmdialog.dialog('close');
+      $.ajax({
+        type: 'POST',
+        url: '/temp',
+        data: {
+          objectslist: nodes,
+          colist: coordinates
+        }
+       })
+      .success(function(results){
+          console.log("DONE!")
+      })
+      .error(function(error){
+          console.log("ERROR NOTIFICATION!")
+      });
+      return false;
+    }
+
+    function showtheresults()
+    {
+
+        $.ajax({
+            type: "POST",
+            url: "/tempresult",
+            })
+            .success(function(data){
+                
+                var resultdata = JSON.parse(data);
+                var image = "http://www.googlemapsmarkers.com/v1/009900/"
+                for(lines in resultdata)
+                {
+                    var object_array = resultdata[lines]
+                    var value_object_array = object_array["value"]
+                    
+                    for(obj in value_object_array)
+                    {
+                        var nodes = value_object_array[obj]
+                        var type = nodes["type"]
+                        var latitude = parseFloat(nodes["latitude"])
+                        var longitude = parseFloat(nodes["longitude"])
+                        var details = nodes["property"]
+
+                        console.log(type)
+
+                        if(latitude == "None" || longitude == "None")
+                        {
+                          console.log("Latitude or Longitude is None");
+                        }
+                        else
+                        {
+                          if(type == "Conference")
+                          {
+
+                            var latlng = new google.maps.LatLng(latitude, longitude);
+                            
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                icon:image,
+                                position: latlng
+
+                            });
+
+                            var infowindow = new google.maps.InfoWindow(
+                            {
+                              maxWidth: 200
+                            });
+
+                            google.maps.event.addListener(marker,'click',
+                            (function(marker,details,infowindow){
+                              
+                              return function(){
+                                infowindow.setContent(details);
+                                infowindow.open(map,marker);
+                              };
+                            })(marker,details,infowindow));
+                          }
+                          
+                          else if(type == "Author")
+                          {
+
+                            var latlng = new google.maps.LatLng(latitude, longitude);
+                            
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: latlng
+
+                            });
+
+                            var infowindow = new google.maps.InfoWindow(
+                            {
+                              maxWidth: 200
+                            });
+
+                            google.maps.event.addListener(marker,'click',
+                            (function(marker,details,infowindow){
+                              
+                              return function(){
+                                infowindow.setContent(details);
+                                infowindow.open(map,marker);
+                              };
+                            })(marker,details,infowindow));
+                          }
+                        }
+                    }         
+                }
+            })
+            .error(function(error){
+            console.log("ERROR NOTIFICATION!")
+          });
+
+
+    }
+
+    </script>
+  </body>
+</html>
+
