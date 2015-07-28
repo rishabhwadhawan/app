@@ -43,7 +43,7 @@ app.post('/temp',function(req,res){
 	mode:'text',
 	args: [jsonlogobject],
 	pythonOptions: ['-u'],
-	scriptPath: '/home/ubuntu/Hackathon/Code'
+	scriptPath: '/home/ubuntu/Hackathon/app'
     }
     
     pythonshell.run('KafkaInterface.py',options,function(err,results){
