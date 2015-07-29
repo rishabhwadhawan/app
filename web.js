@@ -74,7 +74,7 @@ app.post('/temp',function(req,res){
         console.log(results)
     });   
     */
-    res.send(200);
+    res.send("HELLO");
 });
 
 app.post('/test', function(req, res) {

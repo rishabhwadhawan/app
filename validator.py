@@ -30,18 +30,19 @@ def mock_request(x):
 
 	if method == 'GET':
 		new_response = requests.get(url)
-	elif method == 'PATCH':
+	elif method == 'POST':
 		data = json.dumps(data)
-		new_response = requests.patch(url, headers=headers, data=data)
-	elif method == 'PUT' or method == 'POST':
+		new_response = requests.post(url, headers=headers, data=data)
+	elif method == 'PUT':
 		new_response = requests.put(url, headers=headers, data=data)
 	elif method == 'DELETE':
 		new_response = requests.delete(url, headers=headers, data=data)
 	else:
 		print("Hmm, method was %s"%(method))
-	print(new_response)
+	
+	print("New response %s old response %s"%(new_response.text, logged_response))
 
-	if new_response != logged_response:
+	if new_response.text != logged_response:
 		return ("Responses differ.", x, new_response, logged_response)
 		print("Error, responses differ.")
 		print("___REQUEST___")
