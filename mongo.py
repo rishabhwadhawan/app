@@ -7,29 +7,22 @@ class ValidatorTable():
         self.client = MongoClient("0.0.0.0", 27017)
         self.db = self.client['validation']
 
-    def insert_log(self, logObject):
+    def insert_log(self, request, response):
         posts = self.db.posts
         timestamp = datetime.datetime.now().strftime("%d %B %Y %I:%M:%S%p")
-        old_log = posts.find_one({'log': logObject})
+        old_log = posts.find_one({'request': request})
         if old_log is not None:    
-            return posts.update_one(old_log, {'$set': {'log': logObject, 'timestamp': timestamp}}).upserted_id
+            return posts.update_one(old_log, {'$set': {'request': request, 'response': response, 'timestamp': timestamp}}).upserted_id
         else:
-            return posts.insert_one({'log': logObject, 'timestamp': timestamp}).inserted_id
-    """"
-    These functions are trivial and part of MongoClient, because remove is deprecated.
+            return posts.insert_one({'request': request, 'response': response}).inserted_id
 
-    def delete_one(self, logObject):
+    def delete_one(self, request, response):
         posts = self.db.posts
-        return posts.remove({'log': logObject})
+        return posts.remove({'request': request, 'response': response})
 
-    def delete_many(self, list_of_logs):
+    def get_log(self, request, response):
         posts = self.db.posts
-        for log in list_of_logs:
-            posts.remove({'log': log})
-    """
-    def get_log(self, logObject):
-        posts = self.db.posts
-        return posts.find_one({'log': logObject})
+        return posts.find_one({'request': request, 'response': response})
 
     def see_log(self):
         l = []
@@ -43,10 +36,4 @@ class ValidatorTable():
         string = " "
         for i in range(cursor.count()):
             string += str(cursor[i]) + "\n"
-        return string
-
-#    def insert_many_logs(self, list_of_logs):
-#        posts = self.db.posts
-#        result = posts.insert_many([{'log': i} for i in list_of_logs])
-#        return result.inserted_ids
-
+        return string    
